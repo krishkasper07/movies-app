@@ -7,6 +7,7 @@ import { getGenres } from "../services/fakeGenreService";
 import ListGroup from "./common/listGroup";
 import { useEffect } from "react";
 import MoviesTable from "./moviesTable";
+import _ from "lodash";
 
 export const Movies=()=>{
     //state for movies
@@ -17,8 +18,14 @@ export const Movies=()=>{
     const [currentPage,setCurrentPage]=useState(1);
     //state to genre of movies
     const [genre,setGenre]=useState([]);
-
-    const [selectedGenre,setSelectedGenre]=useState([])
+    
+    //
+    const [selectedGenre,setSelectedGenre]=useState([]);
+    //state for sorting 
+    const [sortColumn,setSortColumn]=useState({
+        path:'title',
+        order:'asc'
+    })
 
     const handleDelete=(movie)=>{
            const newMovie=movies.filter(m=>m._id !== movie._id);
@@ -41,14 +48,19 @@ export const Movies=()=>{
         setSelectedGenre(genre);
         setCurrentPage(1);
     }
+    const handleSort=(sort)=>{
+          setSortColumn(sort);
+    }
     useEffect(() => {
-        const gen= [{name:'All genre'},...getGenres()]
+        const gen= [{_id:'',name:'All genre'},...getGenres()];
         setmovies(getMovies());
         setGenre(gen);
     }, [])
     const filtered=selectedGenre && selectedGenre._id ? movies.filter(m=> m.genre._id === selectedGenre._id) : movies;
+    // returning a sorted array using lodash
+ const sorted=_.orderBy(filtered,[sortColumn.path],[sortColumn.order]);
 // importing paginate from utils 
-const allMovies=paginate(filtered,currentPage,pageSize);
+const allMovies=paginate(sorted,currentPage,pageSize);
     //object destructing 
     const {length:count}=movies
     if(count ===0)
@@ -66,7 +78,8 @@ return(<div>
             allMovies={allMovies}
             onDelete={handleDelete}
             onLike={handleLike}
-            />
+            onSort={handleSort}
+            sortColumn={sortColumn}/>
         <Pagination 
         itemCount={filtered.length} 
         pageSize={pageSize}
