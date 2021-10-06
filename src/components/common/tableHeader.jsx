@@ -10,10 +10,15 @@ const {onSort,sortColumn,columns}=props;
         }
         onSort(sort);
     }
+    function renderSortIcon(column){
+        if(column.path!== sortColumn.path) return null;
+        if(sortColumn.order === 'asc') return <i className="fa fa-sort-asc"/>;
+        return <i className="fa fa-sort-desc"/>;
+    }
     return ( <>
         <thead>
-            <tr>
-                {columns.map(c=>{ return <th key={c.path || c.key}onClick={()=>raiseColumn(c.path)}>{c.label}</th>})}
+            <tr className="clickable">
+                {columns.map(c=>{ return <th key={c.path || c.key}onClick={()=>raiseColumn(c.path)}>{c.label} {renderSortIcon(c)}</th>})}
             </tr>
         </thead>
     </> );

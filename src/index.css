@@ -1,6 +1,9 @@
-
 body{
-    background-color: rgb(243, 174, 180);
+    background-color: rgb(252, 109, 109);
     padding: 20px 0 0 0;
     font-family: sans-serif;
+}
+
+.clickable{
+    cursor: pointer;
 }
