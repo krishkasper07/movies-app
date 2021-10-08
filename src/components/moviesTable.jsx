@@ -1,6 +1,5 @@
 import Like from "./common/like";
-import TableBody from "./common/tableBody";
-import TableHeader from "./common/tableHeader";
+import Table from './common/table'
 const MoviesTable = (props) => {
   const {allMovies,sortColumn,onSort,onLike,onDelete}=props;
        const columns=[
@@ -11,16 +10,10 @@ const MoviesTable = (props) => {
             {key:'like',content:movie=><Like liked={movie.liked} onLike={()=>onLike(movie)}/>},
             {key:'delete',content:movie=><button
             onClick={()=>onDelete(movie)}className="btn btn-danger btn-sm">Delete</button>},]
-    return ( <>
-         <table className="table">
-            <TableHeader 
-            columns={columns}
-            onSort={onSort}
-            sortColumn={sortColumn}/>
-            <TableBody data={allMovies} 
-           columns={columns}/>
-        </table>
-    </> );
+    return (
+        <Table allMovies={allMovies} onSort={onSort} columns={columns} 
+        sortColumn={sortColumn}/>
+    );
 }
  
 export default MoviesTable;

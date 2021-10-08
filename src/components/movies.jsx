@@ -51,22 +51,29 @@ export const Movies=()=>{
     const handleSort=(sort)=>{
           setSortColumn(sort);
     }
+    //getting page data
+    const getPageData=()=>{
+        const filtered=selectedGenre && selectedGenre._id ? movies.filter(m=> m.genre._id === selectedGenre._id) : movies;
+        // returning a sorted array using lodash
+     const sorted=_.orderBy(filtered,[sortColumn.path],[sortColumn.order]);
+    // importing paginate from utils 
+    const allMovies=paginate(sorted,currentPage,pageSize);
+    return {totalCount:filtered.length ,data:allMovies};
+    }
     useEffect(() => {
         const gen= [{_id:'',name:'All genre'},...getGenres()];
         setmovies(getMovies());
         setGenre(gen);
     }, [])
-    const filtered=selectedGenre && selectedGenre._id ? movies.filter(m=> m.genre._id === selectedGenre._id) : movies;
-    // returning a sorted array using lodash
- const sorted=_.orderBy(filtered,[sortColumn.path],[sortColumn.order]);
-// importing paginate from utils 
-const allMovies=paginate(sorted,currentPage,pageSize);
+
+   
     //object destructing 
     const {length:count}=movies
     if(count ===0)
     return <p>there are no movies in the database</p>
+    const {totalCount,data:allMovies}=getPageData();
 return(<div>
-   <p className="badge bg-primary rounded">showing {filtered.length} movies in the database</p>
+   <p className="badge bg-primary rounded">showing {totalCount} movies in the database</p>
     <div className="row">
         <div className="col-2">
         <ListGroup items={genre}
@@ -81,7 +88,7 @@ return(<div>
             onSort={handleSort}
             sortColumn={sortColumn}/>
         <Pagination 
-        itemCount={filtered.length} 
+        itemCount={totalCount} 
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={handlePageChange}/>
