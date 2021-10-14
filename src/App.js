@@ -4,11 +4,13 @@ import { Movies } from "./components/movies";
 import Rentals from "./components/rentals";
 import NotFound from "./components/not-found"
 import NavBar from "./components/navbar"
+import LoginForm from "./components/loginForm";
 function App() {
   return (
-    <main className="container-fluid">
+    <main className="container">
     <NavBar/>
     <Switch>
+    <Route path ="/login" component={LoginForm}/>
     <Route path="/movies" component={Movies}/>
     <Route path="/customers" component={Customers}/>
     <Route path="/rentals" component={Rentals}/>

@@ -8,7 +8,8 @@ if(pagesCount === 1) return null;
     {pages.map(page=>{
      return <li 
      key={page} 
-     className={page === currentPage ? "page-item active clickable" :"page-item clickable"}>
+     className={page === currentPage ? "page-item active clickable" :"page-item clickable"}
+     >
        <a className="page-link" onClick={()=>onPageChange(page)}>{page}
        </a>
        </li>
